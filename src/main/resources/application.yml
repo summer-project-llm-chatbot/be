@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: llm_chatbot
+  profiles:
+    include: secret
