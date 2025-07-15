@@ -8,7 +8,7 @@ public class HeaderBuilder {
     public static HttpHeaders loginHeaders() {
         HttpHeaders headers = new HttpHeaders();
         for (LoginHeader lh : LoginHeader.values()) {
-            headers.set(lh.getHeaderName(), lh.getHeaderValue());
+            headers.set(lh.getName(), lh.getValue());
         }
         // 명시적으로 Form URL Encoded
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);

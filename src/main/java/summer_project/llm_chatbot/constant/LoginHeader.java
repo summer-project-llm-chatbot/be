@@ -7,19 +7,19 @@ public enum LoginHeader {
     REFERER("Referer", AuthEndpoint.LOGIN.url()),
     USER_AGENT("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)…");
 
-    private final String headerName;
-    private final String headerValue;
+    private final String name;
+    private final String value;
 
-    LoginHeader(String headerName, String headerValue) {
-        this.headerName = headerName;
-        this.headerValue = headerValue;
+    LoginHeader(String name, String value) {
+        this.name = name;
+        this.value = value;
     }
 
-    public String getHeaderName() {
-        return headerName;
+    public String getName() {
+        return name;
     }
 
-    public String getHeaderValue() {
-        return headerValue;
+    public String getValue() {
+        return value;
     }
 }

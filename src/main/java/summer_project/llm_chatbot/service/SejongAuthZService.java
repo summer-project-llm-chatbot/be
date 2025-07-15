@@ -6,10 +6,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import summer_project.llm_chatbot.constant.AuthEndpoint;
-import summer_project.llm_chatbot.dto.AuthToken;
-import summer_project.llm_chatbot.dto.LoginResponse;
+import summer_project.llm_chatbot.dto.AuthTokenDto;
+import summer_project.llm_chatbot.dto.LoginResponseDto;
 import summer_project.llm_chatbot.error.ApplicationException;
-import summer_project.llm_chatbot.error.InvalidCredentialError;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -23,14 +22,14 @@ public class SejongAuthZService {
 
     // 세종대 학사정보시스템을 통해 로그인 수행
     // 로그인 성공 여부 및 인증 토큰 정보 반환
-    public LoginResponse login(String username, String password) {
+    public LoginResponseDto login(String username, String password) {
         // 실제 로그인 요청 수행
         ResponseEntity<String> response = requestLogin(username, password);
         // 로그인 성공 여부 확인
         boolean isLoginSuccessful = checkLoginStatus(response.getBody());
 
         if (!isLoginSuccessful) {
-            throw InvalidCredentialError.of("로그인에 실패");
+            throw ApplicationException.of("로그인에 실패", 403);
         }
 
         // 토큰 생성해서 반환
@@ -38,8 +37,8 @@ public class SejongAuthZService {
         String jsessionId = extractCookie(response.getHeaders(), "JSESSIONID");
         String ssoToken = extractCookie(response.getHeaders(), "ssotoken");
 
-        AuthToken token = AuthToken.of(jsessionId, ssoToken);
-        return new LoginResponse(true, token);
+        AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
+        return new LoginResponseDto(true, token);
     }
 
     // 학사정보시스템에 로그인 요청 (HTTP POST 요청)
