@@ -25,9 +25,9 @@ public class SejongAuthZService {
      * 세종대 학사정보시스템을 통해 로그인 수행
      * @param username 학사정보 시스템 로그인아이디 (학번)
      * @param password 학사정보 시스템 로그인 비밀번호
-     * @return 로그인 성공 여부 및 인증 토큰 정보 반환
+     * @return 로그인 성공 여부 반환
      */
-    public LoginResponseDto login(String username, String password) {
+    public boolean login(String username, String password) {
         // 실제 로그인 요청 수행
         ResponseEntity<String> response = requestLogin(username, password);
         // 로그인 성공 여부 확인
@@ -43,8 +43,8 @@ public class SejongAuthZService {
         String jsessionId = cookies.getOrDefault("JSESSIONID", "");
         String ssoToken = cookies.getOrDefault("ssotoken", "");
 
-        AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
-        return new LoginResponseDto(true, token);
+        // AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
+        return true;
     }
 
     // 학사정보시스템에 로그인 요청 (HTTP POST 요청)
