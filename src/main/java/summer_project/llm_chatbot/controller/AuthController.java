@@ -1,5 +1,6 @@
 package summer_project.llm_chatbot.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,17 @@ public class AuthController {
     private final JwtService jwtService;
     private final UserService userService;
 
+    @Operation(
+            summary = "학사정보 연계 로그인 API",
+            description =
+    """
+    학사정보 연계 로그인을 수행합니다.
+    
+    `id`는 학사정보시스템 포털의 id로 기본적으로 학번과 동일합니다.
+    
+    `password`는 학사정보시스템 포털의 비밀번호입니다.
+    """
+    )
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         boolean isLoginSuccess = sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
