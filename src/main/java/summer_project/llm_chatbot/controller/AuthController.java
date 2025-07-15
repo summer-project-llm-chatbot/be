@@ -15,6 +15,6 @@ public class AuthController {
 
     @PostMapping("/api/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto) {
-        return sejongAuthZService.login(loginRequestDto.getId(), loginRequestDto.getPassword());
+        return sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
     }
 }
