@@ -9,8 +9,9 @@ import summer_project.llm_chatbot.constant.AuthEndpoint;
 import summer_project.llm_chatbot.dto.AuthTokenDto;
 import summer_project.llm_chatbot.dto.LoginResponseDto;
 import summer_project.llm_chatbot.error.ApplicationException;
+import summer_project.llm_chatbot.util.HttpUtil;
 
-import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -20,8 +21,12 @@ public class SejongAuthZService {
             Pattern.compile("var\\s+result\\s*=\\s*['\"]([^'\"]+)['\"]");
     private static final String SUCCESS = "OK";
 
-    // 세종대 학사정보시스템을 통해 로그인 수행
-    // 로그인 성공 여부 및 인증 토큰 정보 반환
+    /**
+     * 세종대 학사정보시스템을 통해 로그인 수행
+     * @param username 학사정보 시스템 로그인아이디 (학번)
+     * @param password 학사정보 시스템 로그인 비밀번호
+     * @return 로그인 성공 여부 및 인증 토큰 정보 반환
+     */
     public LoginResponseDto login(String username, String password) {
         // 실제 로그인 요청 수행
         ResponseEntity<String> response = requestLogin(username, password);
@@ -34,8 +39,9 @@ public class SejongAuthZService {
 
         // 토큰 생성해서 반환
         // HTTP 응답 헤더에서 쿠키 값 추출
-        String jsessionId = extractCookie(response.getHeaders(), "JSESSIONID");
-        String ssoToken = extractCookie(response.getHeaders(), "ssotoken");
+        Map<String, String> cookies = HttpUtil.parseCookies(response.getHeaders());
+        String jsessionId = cookies.getOrDefault("JSESSIONID", "");
+        String ssoToken = cookies.getOrDefault("ssotoken", "");
 
         AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
         return new LoginResponseDto(true, token);
@@ -43,6 +49,13 @@ public class SejongAuthZService {
 
     // 학사정보시스템에 로그인 요청 (HTTP POST 요청)
     // 응답 본문과 쿠키 받아서 반환
+
+    /**
+     * 학사정보시스템에 로그인 요청
+     * @param username 학사정보시스템 아이디 (학번)
+     * @param password 학사정보시스템 비밀번호
+     * @return 로그인 요청 결과가 반환된다. body에는 로그인 응답 결과가 HTML로 반환됨
+     */
     public ResponseEntity<String> requestLogin(String username, String password){
         RestTemplate restTemplate = new RestTemplate();
         String loginUrl = AuthEndpoint.LOGIN.url();
@@ -67,31 +80,20 @@ public class SejongAuthZService {
         );
     }
 
-    // 응답 HTML에 OK 가 있는지 확인. 없으면 연결 오류
-    // 응답 HTML에서 로그인 성공 여부 확인 후 반환
+    /**
+     * 응답 HTML을 통해 로그인 성공 여부 확인
+     * @param body HTML 응답
+     * @return
+     */
     private boolean checkLoginStatus(String body){
+        // 응답 HTML 에 포함된 JS Val 변수값을 파싱하여 확인
+        // 성공인 경우 result에 "OK" 가 명시되어 있음
+        // 외부 응답 구조가 변경될 경우 정규식 수정해야함
         Matcher matcher = LOGIN_RESULT_REGEX.matcher(body);
         if (!matcher.find()) {
             throw ApplicationException.of("올바르지 않은 응답 유형", 404);
         }
         String result = matcher.group(1);
         return SUCCESS.equals(result);
-    }
-
-    // HTTP 응답 헤더에서 쿠키 값 추출
-    // 세션 ID와 SSO 토큰 반환
-    private String extractCookie(HttpHeaders headers, String name) {
-        List<String> cookies = headers.get(HttpHeaders.SET_COOKIE);
-        if (cookies == null) {
-            return "";
-        }
-        return cookies.stream()
-                      .filter(cookie -> cookie.startsWith(name + "="))
-                      .map(cookie -> {
-                          String[] parts = cookie.split(";", 2);
-                          return parts[0].substring(name.length() + 1);
-                      })
-                      .findFirst()
-                      .orElse("");
     }
 }
