@@ -27,7 +27,7 @@ public class SwaggerConfig {
                 .description("로컬 서버");
 
         Server prodServer = new Server()
-                .url("https://api.example.com")
+                .url("http://34.64.204.205:8080")
                 .description("운영 서버 (Production)");
 
         return new OpenAPI()
