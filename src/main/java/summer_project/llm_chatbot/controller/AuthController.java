@@ -12,6 +12,7 @@ import summer_project.llm_chatbot.dto.LoginRequestDto;
 import summer_project.llm_chatbot.dto.LoginResponseDto;
 import summer_project.llm_chatbot.entity.UserEntity;
 import summer_project.llm_chatbot.error.ApplicationException;
+import summer_project.llm_chatbot.error.ErrorCode;
 import summer_project.llm_chatbot.service.JwtService;
 import summer_project.llm_chatbot.service.SejongAuthZService;
 import summer_project.llm_chatbot.service.UserService;
@@ -39,7 +40,7 @@ public class AuthController {
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
         boolean isLoginSuccess = sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
         if (!isLoginSuccess) {
-            throw ApplicationException.of("로그인 실패", 403);
+            throw ApplicationException.of(ErrorCode.LOGIN_FAILED);
         }
         UserEntity user = userService.register(loginRequestDto.id());
         JwtDto jwtDto = jwtService.generateJwtPair(user);

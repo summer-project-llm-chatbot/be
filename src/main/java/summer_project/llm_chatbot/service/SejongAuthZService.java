@@ -9,6 +9,7 @@ import summer_project.llm_chatbot.constant.AuthEndpoint;
 import summer_project.llm_chatbot.dto.AuthTokenDto;
 import summer_project.llm_chatbot.dto.LoginResponseDto;
 import summer_project.llm_chatbot.error.ApplicationException;
+import summer_project.llm_chatbot.error.ErrorCode;
 import summer_project.llm_chatbot.util.HttpUtil;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ public class SejongAuthZService {
         boolean isLoginSuccessful = checkLoginStatus(response.getBody());
 
         if (!isLoginSuccessful) {
-            throw ApplicationException.of("로그인에 실패", 403);
+            throw ApplicationException.of(ErrorCode.LOGIN_FAILED);
         }
 
         // 토큰 생성해서 반환
@@ -89,9 +90,10 @@ public class SejongAuthZService {
         // 응답 HTML 에 포함된 JS Val 변수값을 파싱하여 확인
         // 성공인 경우 result에 "OK" 가 명시되어 있음
         // 외부 응답 구조가 변경될 경우 정규식 수정해야함
+        // TODO: 외부 응답 구조가 변경된 경우의 예외 처리는 되지 않음, @yejoo
         Matcher matcher = LOGIN_RESULT_REGEX.matcher(body);
         if (!matcher.find()) {
-            throw ApplicationException.of("올바르지 않은 응답 유형", 404);
+            throw ApplicationException.of(ErrorCode.LOGIN_FAILED);
         }
         String result = matcher.group(1);
         return SUCCESS.equals(result);
