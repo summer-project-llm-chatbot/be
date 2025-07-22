@@ -25,4 +25,8 @@ public class UserService {
 
         return user;
     }
+
+    // getUserProfile
+
+    // getUser수강과목
 }

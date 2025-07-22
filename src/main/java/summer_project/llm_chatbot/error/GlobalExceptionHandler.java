@@ -10,6 +10,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorResponseDto> handleApplicationException(ApplicationException e) {
         return ResponseEntity.status(e.getErrorCode().status)
-                .body(ErrorResponseDto.of(false, e.getErrorCode().status, e.getErrorCode().message));
+                .body(ErrorResponseDto.of(false, e.getErrorCode().status.value(), e.getErrorCode().message));
     }
 }

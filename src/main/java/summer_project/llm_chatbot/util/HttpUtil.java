@@ -30,4 +30,13 @@ public final class HttpUtil {
                               (first, second) -> second
                       ));
     }
+
+    public static String toCookieHeader(Map<String, String> cookies) {
+        if (cookies == null || cookies.isEmpty()) {
+            return "";
+        }
+        return cookies.entrySet().stream()
+                      .map(e -> e.getKey() + "=" + e.getValue())
+                      .collect(Collectors.joining("; "));
+    }
 }

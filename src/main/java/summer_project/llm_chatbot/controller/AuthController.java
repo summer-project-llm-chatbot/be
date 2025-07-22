@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import summer_project.llm_chatbot.dto.AuthTokenDto;
 import summer_project.llm_chatbot.dto.JwtDto;
 import summer_project.llm_chatbot.dto.LoginRequestDto;
 import summer_project.llm_chatbot.dto.LoginResponseDto;
@@ -38,10 +39,8 @@ public class AuthController {
     )
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginRequestDto) {
-        boolean isLoginSuccess = sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
-        if (!isLoginSuccess) {
-            throw ApplicationException.of(ErrorCode.LOGIN_FAILED);
-        }
+        AuthTokenDto token = sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
+
         UserEntity user = userService.register(loginRequestDto.id());
         JwtDto jwtDto = jwtService.generateJwtPair(user);
 
