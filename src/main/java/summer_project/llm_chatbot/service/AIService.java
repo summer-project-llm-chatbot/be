@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class AiService {
+public class AIService {
 
     private final WebClient webClient = WebClient.builder()
             .baseUrl("https://api.openai.com/v1")

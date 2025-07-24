@@ -11,7 +11,7 @@ import summer_project.llm_chatbot.dto.ConversationDto;
 import summer_project.llm_chatbot.entity.ChatLogEntity;
 import summer_project.llm_chatbot.entity.ConversationEntity;
 import summer_project.llm_chatbot.entity.UserEntity;
-import summer_project.llm_chatbot.service.AiService;
+import summer_project.llm_chatbot.service.AIService;
 import summer_project.llm_chatbot.service.ChatLogService;
 import summer_project.llm_chatbot.service.ConversationService;
 import summer_project.llm_chatbot.service.UserService;
@@ -24,15 +24,18 @@ import java.util.List;
 public class ChatController {
     private final ConversationService conversationService;
     private final ChatLogService chatLogService;
-    private final AiService aiService;
+    private final AIService aiService;
     private final UserService userService;
+
+    UserEntity user;
+    ConversationEntity conversation;
 
     // [1] 질문 보내기
     @PostMapping
     public ResponseEntity<ChatResponseDto> askQuestion(@RequestBody ChatRequestDto request) {
         // 1. 기존 대화 불러오기
         if (request.getConversationId() == null) {
-            UserEntity user = userService.getById(request.getUserId());
+            user = userService.getById(request.getUserId());
             conversation = conversationService.createConversation(user);
         } else {
             conversation = conversationService.getById(request.getConversationId());
@@ -67,7 +70,9 @@ public class ChatController {
     public ResponseEntity<ChatHistoryDto> getChatLogs(@RequestParam Long conversationId) {
         List<ChatLogEntity> logs = chatLogService.getLogsByConversationId(conversationId);
         List<ChatResponseDto> chatDtos = logs.stream()
-                .map(log -> new ChatResponseDto(log.getQuestion(), log.getAnswer(), log.getCreatedAt())).toList();
+                .map(log -> new ChatResponseDto(log.getQuestion(), log.getAnswer(), log.getCreatedAt(),
+                        log.getConversation().getId()))
+                .toList();
         return ResponseEntity.ok(new ChatHistoryDto(chatDtos));
     }
 

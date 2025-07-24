@@ -15,7 +15,7 @@ public class ChatLogService {
 
     private final ChatLogRepository chatLogRepository;
     private final ConversationService conversationService;
-    private final AiService aiService;
+    private final AIService aiService;
 
     public ChatLogEntity handleChat(Long conversationId, String question) {
         // 1. 대화 세션 가져오기
@@ -28,6 +28,17 @@ public class ChatLogService {
         conversationService.setTitleIfEmpty(conversation, question);
 
         // 4. 질문/응답 저장
+        ChatLogEntity log = ChatLogEntity.builder()
+                .conversation(conversation)
+                .question(question)
+                .answer(answer)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return chatLogRepository.save(log);
+    }
+
+    public ChatLogEntity save(ConversationEntity conversation, String question, String answer) {
         ChatLogEntity log = ChatLogEntity.builder()
                 .conversation(conversation)
                 .question(question)
