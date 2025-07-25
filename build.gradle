@@ -38,6 +38,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // jsoup
+    implementation 'org.jsoup:jsoup:1.17.2'
 
     // jwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
