@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity(name = "user")
 @Getter
@@ -18,8 +20,12 @@ public class UserEntity {
     @Column(name = "student_id", unique = true, nullable = false)
     private String studentId;
 
+    // 사용자와 대화목록 대응
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ConversationEntity> conversations = new ArrayList<>();
+
     @Builder(toBuilder = true)
-    public UserEntity(Long id, String studentId){
+    public UserEntity(Long id, String studentId) {
         this.id = id;
         this.studentId = studentId;
     }
