@@ -2,9 +2,9 @@ package summer_project.llm_chatbot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.util.Map;
 
@@ -13,35 +13,33 @@ import java.util.Map;
 public class AIService {
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://api.openai.com/v1")
+            .baseUrl("https://56be629bbcb6.ngrok-free.app")
             .defaultHeader("Content-Type", "application/json")
             .build();
 
-    @Value("${openai.api.key}")
-    private String apiKey;
+    // @Value("${openai.api.key}")
+    // private String apiKey;
 
     public String ask(String prompt) {
-        Map<String, Object> request = Map.of(
-                "model", "gpt-3.5-turbo",
-                "messages", new Object[] {
-                        Map.of("role", "user", "content", prompt)
-                });
+        Map<String, Object> request = Map.of("question", prompt);
+        // request.put("userId", 1); // 테스트용, 실제 userId로 교체 가능
+        // .put("question", prompt);
+        // request.put("conversationId", null); // 또는 실제 값
 
         return webClient.post()
-                .uri("/chat/completions")
-                .header("Authorization", "Bearer " + apiKey)
+                .uri("/ask")
                 .bodyValue(request)
                 .retrieve()
-                .bodyToMono(Map.class)
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
+                })
                 .map(response -> {
                     try {
-                        return ((Map) ((Map) ((java.util.List) response.get("choices")).get(0)).get("message"))
-                                .get("content").toString();
+                        return response.get("answer").toString(); // FastAPI가 반환하는 answer만 추출
                     } catch (Exception e) {
-                        return "AI 응답 파싱 실패";
+                        return "FastAPI 응답 파싱 실패";
                     }
                 })
-                .block(); // 동기식 호출
+                .block(); // 동기식으로 결과 받을 때까지 대기
     }
 
 }

@@ -26,7 +26,6 @@ public class UserService {
         return user;
     }
 
-
     @Transactional(readOnly = true)
     public UserEntity getById(Long id) {
         return userRepository.findById(id)
