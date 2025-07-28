@@ -22,9 +22,6 @@ public class AIService {
 
     public String ask(String prompt) {
         Map<String, Object> request = Map.of("question", prompt);
-        // request.put("userId", 1); // 테스트용, 실제 userId로 교체 가능
-        // .put("question", prompt);
-        // request.put("conversationId", null); // 또는 실제 값
 
         return webClient.post()
                 .uri("/ask")
@@ -41,5 +38,6 @@ public class AIService {
                 })
                 .block(); // 동기식으로 결과 받을 때까지 대기
     }
+    // return "[Mock 답변] 질문: " + prompt;}
 
 }

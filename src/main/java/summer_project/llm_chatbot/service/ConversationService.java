@@ -25,8 +25,8 @@ public class ConversationService {
     }
 
     // 사용자의 대화목록 조회
-    public List<ConversationEntity> getConversationsByUserId(Long userId) {
-        return conversationRepository.findByUserId(userId);
+    public List<ConversationEntity> getConversationsByStudentId(String studentId) {
+        return conversationRepository.findByUserStudentId(studentId);
     }
 
     // 특정 대화 조회(chat log)
