@@ -27,11 +27,10 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public UserEntity getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. ID: " + id));
+    public UserEntity getByStudentId(String studentId) {
+        return userRepository.findByStudentId(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. 학번: " + studentId));
     }
-
     // getUserProfile
 
     // getUser수강과목

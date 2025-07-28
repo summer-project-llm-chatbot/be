@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ChatRequestDto {
-    private Long userId;
+    private String studentId;
     private Long conversationId;
     private String question;
 }

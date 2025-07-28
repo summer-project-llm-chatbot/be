@@ -35,7 +35,7 @@ public class ChatController {
     public ResponseEntity<ChatResponseDto> askQuestion(@RequestBody ChatRequestDto request) {
         // 1. 기존 대화 불러오기
         if (request.getConversationId() == null) {
-            user = userService.getById(request.getUserId());
+            user = userService.getByStudentId(request.getStudentId());
             conversation = conversationService.createConversation(user);
         } else {
             conversation = conversationService.getById(request.getConversationId());
@@ -58,8 +58,8 @@ public class ChatController {
 
     // [2] 유저 대화 목록 조회
     @GetMapping("/conversations")
-    public ResponseEntity<List<ConversationDto>> getUserConversations(@RequestParam Long userId) {
-        List<ConversationEntity> conversations = conversationService.getConversationsByUserId(userId);
+    public ResponseEntity<List<ConversationDto>> getUserConversations(@RequestParam String studentId) {
+        List<ConversationEntity> conversations = conversationService.getConversationsByStudentId(studentId);
         List<ConversationDto> result = conversations.stream()
                 .map(convo -> new ConversationDto(convo.getId(), convo.getTitle(), convo.getStartedAt())).toList();
         return ResponseEntity.ok(result);
@@ -67,7 +67,17 @@ public class ChatController {
 
     // [3] 대화 로그 조회
     @GetMapping("/history")
-    public ResponseEntity<ChatHistoryDto> getChatLogs(@RequestParam Long conversationId) {
+    public ResponseEntity<ChatHistoryDto> getChatLogs(@RequestParam Long conversationId
+    // ,@RequestParam String studentId
+    ) {
+        // // 1. 대화 조회
+        // ConversationEntity conversation =
+        // conversationService.getById(conversationId);
+
+        // // 2. 학생 소유 여부 확인
+        // if (!conversation.getUser().getStudentId().equals(studentId)) {
+        // throw new IllegalArgumentException("이 대화는 해당 학생의 것이 아닙니다.");
+        // }
         List<ChatLogEntity> logs = chatLogService.getLogsByConversationId(conversationId);
         List<ChatResponseDto> chatDtos = logs.stream()
                 .map(log -> new ChatResponseDto(log.getQuestion(), log.getAnswer(), log.getCreatedAt(),
