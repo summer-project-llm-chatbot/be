@@ -3,3 +3,8 @@ spring:
     name: llm_chatbot
   profiles:
     include: secret
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+crawler:
+  base-url: http://localhost:8000
