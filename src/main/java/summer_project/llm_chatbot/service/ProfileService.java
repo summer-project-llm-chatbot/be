@@ -1,5 +1,6 @@
 package summer_project.llm_chatbot.service;
 
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -8,14 +9,20 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import summer_project.llm_chatbot.constant.AuthEndpoint;
 import summer_project.llm_chatbot.constant.ProfileEndpoint;
 import summer_project.llm_chatbot.constant.ProfileField;
 import summer_project.llm_chatbot.dto.AuthTokenDto;
+import summer_project.llm_chatbot.dto.LoginRequestDto;
 import summer_project.llm_chatbot.dto.ProfileDto;
+import summer_project.llm_chatbot.entity.ProfileEntity;
+import summer_project.llm_chatbot.entity.UserEntity;
 import summer_project.llm_chatbot.error.ApplicationException;
 import summer_project.llm_chatbot.error.ErrorCode;
+import summer_project.llm_chatbot.repository.ProfileRepository;
+import summer_project.llm_chatbot.repository.UserRepository;
 import summer_project.llm_chatbot.util.HttpUtil;
 
 import java.io.IOException;
@@ -23,7 +30,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ProfileService {
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
+
+    @Transactional
     public ResponseEntity<String> getProfile(AuthTokenDto authToken){
         RestTemplate restTemplate = new RestTemplate();
         String profileUrl = ProfileEndpoint.PROFILE.url();
@@ -41,6 +53,7 @@ public class ProfileService {
         );
     }
 
+    @Transactional
     public ProfileDto parseProfileFromHtml(String html) {
         String TABLE_ROWS_SELECTOR = "table.b-board-table tbody tr";
 
@@ -81,6 +94,31 @@ public class ProfileService {
         } catch (Exception e) {
             throw ApplicationException.of(ErrorCode.PROFILE_IO_FAILED);
         }
+    }
+
+    @Transactional
+    public ProfileDto fetchAndSaveProfile(AuthTokenDto token) {
+        String html = getProfile(token).getBody();
+        ProfileDto dto = parseProfileFromHtml(html);
+        saveProfileEntity(dto, dto.studentCode());
+        return dto;
+    }
+
+    private void saveProfileEntity(ProfileDto dto, String studentCode) {
+        UserEntity user = userRepository.findByStudentId(studentCode)
+                                        .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. 학번: " + studentCode));
+
+        profileRepository.findByStudentCode(dto.studentCode())
+                         .orElseGet(() -> profileRepository.save(ProfileEntity.builder()
+                                                                              .studentCode(dto.studentCode())
+                                                                              .major(dto.major())
+                                                                              .grade(dto.grade())
+                                                                              .userStatus(dto.userStatus())
+                                                                              .totalSemesters(dto.totalSemesters())
+                                                                              .readingVerifiedSemesters(dto.readingVerifiedSemesters())
+                                                                              .readingCertification(dto.readingCertification())
+                                                                              .user(user)
+                                                                              .build()));
     }
 
     private int parseInt(String raw, int defaultValue) {

@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
-import summer_project.llm_chatbot.dto.CourseSummary;
+import summer_project.llm_chatbot.dto.CourseSummaryDto;
 import summer_project.llm_chatbot.dto.CrawlingLoginDto;
-import summer_project.llm_chatbot.dto.LoginRequestDto;
 import summer_project.llm_chatbot.error.ApplicationException;
 import summer_project.llm_chatbot.error.ErrorCode;
 
@@ -37,7 +36,7 @@ public class CrawlController {
                     """
     )
     @PostMapping("/grade-summary")
-    public ResponseEntity<CourseSummary[]> getGradeSummary(@RequestBody CrawlingLoginDto loginDto) {
+    public ResponseEntity<CourseSummaryDto[]> getGradeSummary(@RequestBody CrawlingLoginDto loginDto) {
         // 1) Python API URL
         String crawlerUrl = "http://localhost:8000/crawl";
 
@@ -49,10 +48,10 @@ public class CrawlController {
 
         // 3) Python 서버에 POST 요청
         try {
-            ResponseEntity<CourseSummary[]> response = restTemplate.postForEntity(
+            ResponseEntity<CourseSummaryDto[]> response = restTemplate.postForEntity(
                     crawlerUrl,
                     request,
-                    CourseSummary[].class
+                    CourseSummaryDto[].class
             );
             return ResponseEntity.ok(response.getBody());
 

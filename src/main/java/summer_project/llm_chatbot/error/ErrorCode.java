@@ -9,6 +9,7 @@ public enum ErrorCode {
     PROFILE_REQUEST_FAILED(HttpStatus.BAD_GATEWAY, "프로필 요청 실패"),
     PROFILE_IO_FAILED(HttpStatus.BAD_GATEWAY, "프로필 가져오기 실패"),
     PROFILE_PARSE_FAILED(HttpStatus.BAD_GATEWAY,"프로필 파싱 오류"),
+    CRAWLING_FAILED(HttpStatus.FORBIDDEN, "크롤링 실패"),
     ;
 
     public final HttpStatus status;

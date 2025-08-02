@@ -24,10 +24,33 @@ public class UserEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConversationEntity> conversations = new ArrayList<>();
 
+    // profile 1:1 매핑
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private ProfileEntity profile;
+
+    // course n:m 매핑
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EnrollmentEntity> enrollments = new ArrayList<>();
+
     @Builder(toBuilder = true)
     public UserEntity(Long id, String studentId) {
         this.id = id;
         this.studentId = studentId;
     }
 
+    public void setProfile(ProfileEntity profile) {
+        this.profile = profile;
+        if (profile.getUser() != this) {
+            profile.setUser(this);
+        }
+    }
+
+    public void enroll(CourseEntity course) {
+        EnrollmentEntity e = EnrollmentEntity.builder()
+                                             .user(this)
+                                             .course(course)
+                                             .build();
+        enrollments.add(e);
+        course.getEnrollments().add(e);
+    }
 }

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import summer_project.llm_chatbot.entity.UserEntity;
+import summer_project.llm_chatbot.repository.ProfileRepository;
 import summer_project.llm_chatbot.repository.UserRepository;
 
 @Service
@@ -31,7 +32,4 @@ public class UserService {
         return userRepository.findByStudentId(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자를 찾을 수 없습니다. 학번: " + studentId));
     }
-    // getUserProfile
-
-    // getUser수강과목
 }
