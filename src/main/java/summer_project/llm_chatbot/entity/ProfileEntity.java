@@ -20,6 +20,9 @@ public class ProfileEntity {
     @Column(name = "student_code", unique = true, nullable = false)
     private String studentCode;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "grade", nullable = false)
     private int grade;
 

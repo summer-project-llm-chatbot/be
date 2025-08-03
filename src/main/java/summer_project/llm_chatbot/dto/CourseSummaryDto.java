@@ -7,7 +7,7 @@ public record CourseSummaryDto(
         @JsonProperty("curi_nm") String curiNm,
         @JsonProperty("type_name") String typeName,
         @JsonProperty("cdt") float cdt) {
-    static CourseSummaryDto of(String curiNo,
+    public static CourseSummaryDto of(String curiNo,
                                String curiNm,
                                String typeName,
                                float cdt) {

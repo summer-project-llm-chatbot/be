@@ -112,6 +112,7 @@ public class ProfileService {
                          .orElseGet(() -> profileRepository.save(ProfileEntity.builder()
                                                                               .studentCode(dto.studentCode())
                                                                               .major(dto.major())
+                                                                              .name(dto.name())
                                                                               .grade(dto.grade())
                                                                               .userStatus(dto.userStatus())
                                                                               .totalSemesters(dto.totalSemesters())
