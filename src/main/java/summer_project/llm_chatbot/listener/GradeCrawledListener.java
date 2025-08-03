@@ -14,7 +14,10 @@ import summer_project.llm_chatbot.error.ApplicationException;
 import summer_project.llm_chatbot.error.ErrorCode;
 import summer_project.llm_chatbot.event.GradeCrawledEvent;
 import summer_project.llm_chatbot.service.CourseService;
+import summer_project.llm_chatbot.service.EnrollmentService;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -23,6 +26,7 @@ public class GradeCrawledListener {
     private final RestTemplate restTemplate;
     private final CourseService courseService;
     private final CrawlController crawlController;
+    private final EnrollmentService enrollmentService;
 
     @Async
     @EventListener
@@ -30,10 +34,16 @@ public class GradeCrawledListener {
         CrawlingLoginDto loginDto = event.getLoginDto();
 
         try{
-            ResponseEntity<CourseSummaryDto[]> summaries = crawlController.getGradeSummary(loginDto);
-            courseService.saveCourses(Objects.requireNonNull(summaries.getBody()));
+            CourseSummaryDto[] body = Objects.requireNonNull(
+                    crawlController.getGradeSummary(loginDto).getBody()
+            );
+            List<String> curiNos = Arrays.stream(body)
+                                         .map(CourseSummaryDto::curiNo)
+                                         .toList();
+            courseService.saveCourses(body);
+            enrollmentService.enrollUserInCourses(loginDto.userId(), curiNos);
         } catch (Exception e) {
-            throw ApplicationException.of(ErrorCode.CRAWLING_FAILED);
+            throw ApplicationException.of(ErrorCode.PROFILE_IO_FAILED);
         }
 
     }

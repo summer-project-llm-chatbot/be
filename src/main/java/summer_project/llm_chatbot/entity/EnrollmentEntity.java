@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class EnrollmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,7 +23,7 @@ public class EnrollmentEntity {
     @JoinColumn(name = "course_id", nullable = false)
     private CourseEntity course;
 
-    @Builder
+    @Builder(toBuilder = true)
     public EnrollmentEntity(UserEntity user,
                             CourseEntity course) {
         this.user = user;

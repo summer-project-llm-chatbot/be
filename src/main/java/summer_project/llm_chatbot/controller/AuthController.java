@@ -14,6 +14,7 @@ import summer_project.llm_chatbot.entity.UserEntity;
 import summer_project.llm_chatbot.error.ApplicationException;
 import summer_project.llm_chatbot.error.ErrorCode;
 import summer_project.llm_chatbot.event.GradeCrawledEvent;
+import summer_project.llm_chatbot.event.ProfileFetchedEvent;
 import summer_project.llm_chatbot.service.*;
 
 @RequiredArgsConstructor
@@ -44,13 +45,7 @@ public class AuthController {
         AuthTokenDto token = sejongAuthZService.login(loginRequestDto.id(), loginRequestDto.password());
         UserEntity user = userService.register(loginRequestDto.id());
 
-        profileService.fetchAndSaveProfile(token);
-
-//        CourseSummaryDto[] summaries = crawlController.getGradeSummary(
-//                new CrawlingLoginDto(loginRequestDto.id(),
-//                                             loginRequestDto.password())
-//                ).getBody();
-//        courseService.saveCourses(summaries);
+        publisher.publishEvent(new ProfileFetchedEvent(token));
 
         publisher.publishEvent(new GradeCrawledEvent(
                 new CrawlingLoginDto(loginRequestDto.id(), loginRequestDto.password())
