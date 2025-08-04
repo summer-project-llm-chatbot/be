@@ -6,6 +6,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import summer_project.llm_chatbot.constant.AuthEndpoint;
+import summer_project.llm_chatbot.constant.CookieName;
 import summer_project.llm_chatbot.dto.AuthTokenDto;
 import summer_project.llm_chatbot.dto.LoginResponseDto;
 import summer_project.llm_chatbot.error.ApplicationException;
@@ -41,7 +42,10 @@ public class SejongAuthZService {
         // 토큰 생성해서 반환
         // HTTP 응답 헤더에서 쿠키 값 추출
         Map<String, String> cookies = HttpUtil.parseCookies(response.getHeaders());
-        String jsessionId = cookies.getOrDefault("JSESSIONID", "");
+        String jsessionId = cookies.getOrDefault(
+                CookieName.PO_JSESSION.getValue(),
+                cookies.getOrDefault(CookieName.JSESSION.getValue(), "")
+        );
         String ssoToken = cookies.getOrDefault("ssotoken", "");
 
         AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);

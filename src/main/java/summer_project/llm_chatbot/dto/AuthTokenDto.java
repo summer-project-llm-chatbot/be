@@ -1,5 +1,7 @@
 package summer_project.llm_chatbot.dto;
 
+import summer_project.llm_chatbot.constant.CookieName;
+
 import java.util.Map;
 
 public record AuthTokenDto(String jsessionId, String ssoToken) {
@@ -15,8 +17,8 @@ public record AuthTokenDto(String jsessionId, String ssoToken) {
      */
     public Map<String, String> toMap() {
         return Map.of(
-                "JSESSIONID", this.jsessionId,
-                "ssotoken",   this.ssoToken
+                CookieName.PO_JSESSION.getValue(), this.jsessionId,
+                CookieName.SSO_TOKEN.getValue(), this.ssoToken
         );
     }
 }
