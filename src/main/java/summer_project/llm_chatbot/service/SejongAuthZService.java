@@ -1,5 +1,6 @@
 package summer_project.llm_chatbot.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+@Slf4j
 @Service
 public class SejongAuthZService {
     private static final Pattern LOGIN_RESULT_REGEX =
@@ -42,6 +44,8 @@ public class SejongAuthZService {
         // 토큰 생성해서 반환
         // HTTP 응답 헤더에서 쿠키 값 추출
         Map<String, String> cookies = HttpUtil.parseCookies(response.getHeaders());
+        log.debug("▶▶ 전체 쿠키 맵: {}", cookies);
+
         String jsessionId = cookies.getOrDefault(
                 CookieName.PO_JSESSION.getValue(),
                 cookies.getOrDefault(CookieName.JSESSION.getValue(), "")
@@ -50,6 +54,10 @@ public class SejongAuthZService {
                 CookieName.SSO_TOKEN.getValue(),
                 ""
         );
+        log.debug("▶▶ 전송할 Cookie 헤더: {}", HttpUtil.toCookieHeader(Map.of(
+                CookieName.PO_JSESSION.getValue(), jsessionId,
+                CookieName.SSO_TOKEN.getValue(),   ssoToken
+        )));
 
         AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
         return token;
