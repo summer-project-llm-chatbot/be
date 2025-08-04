@@ -6,3 +6,7 @@ spring:
 
 crawler:
   base-url: http://localhost:8000
+
+#external:
+ # ai:
+  #  base-url: 

@@ -6,6 +6,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import jakarta.annotation.PostConstruct;
+
 import java.util.Map;
 
 @Service
@@ -17,8 +19,18 @@ public class AIService {
             .defaultHeader("Content-Type", "application/json")
             .build();
 
-    // @Value("${openai.api.key}")
-    // private String apiKey;
+    // @Value("${external.ai.base-url}")
+    // private String aiBaseUrl;
+
+    // private WebClient webClient;
+
+    // @PostConstruct
+    // private void initWebClient() {
+    // this.webClient = WebClient.builder()
+    // .baseUrl(aiBaseUrl)
+    // .defaultHeader("Content-Type", "application/json")
+    // .build();
+    // }
 
     public String ask(String prompt) {
         Map<String, Object> request = Map.of("question", prompt);

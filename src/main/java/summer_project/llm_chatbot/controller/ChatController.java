@@ -33,6 +33,14 @@ public class ChatController {
     // [1] 질문 보내기
     @PostMapping
     public ResponseEntity<ChatResponseDto> askQuestion(@RequestBody ChatRequestDto request) {
+        // 금칙어 필터링
+        System.out.println("======요청도착====== ");
+        System.out.println("입력질문: " + request.getQuestion());
+        if (containsForbiddenWords(request.getQuestion()) == true) {
+            System.out.println("금칙어 포함 질문 감지됨. AI 호출 없이 종료.");
+            return ResponseEntity.badRequest()
+                    .body(new ChatResponseDto("금칙어가 포함된 질문입니다.", "다시 질문해주세요", null, null));
+        }
         // 1. 기존 대화 불러오기
         if (request.getConversationId() == null) {
             user = userService.getByStudentId(request.getStudentId());
@@ -54,6 +62,23 @@ public class ChatController {
         ChatResponseDto response = new ChatResponseDto(
                 savedLog.getQuestion(), savedLog.getAnswer(), savedLog.getCreatedAt(), conversation.getId());
         return ResponseEntity.ok(response);
+    }
+
+    private boolean containsForbiddenWords(String input) {
+        if (input == null || input.isBlank())
+            return false;
+
+        // String normalized = input.replaceAll("[^가-힣a-zA-Z0-9]", ""); // 특수문자 제거
+        String normalized = input.replaceAll("[^가-힣a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ]", "");
+        System.out.println("normalized: '" + normalized + "'");
+        String[] forbiddenPatterns = {
+                "ㅋ{2,}", "ㅎ{2,}", // 반복 웃음
+                "ㅅㅂ", "씨발", "시발", "병신", "ㅄ", "ㄲㅈ", "ㅈㄴ", "좆", "fuck", "shit", "개새", "좃", "ㅆㅂ"
+        };
+
+        return java.util.Arrays.stream(forbiddenPatterns)
+                .anyMatch(pattern -> java.util.regex.Pattern.compile(pattern)
+                        .matcher(normalized).find());
     }
 
     // [2] 유저 대화 목록 조회

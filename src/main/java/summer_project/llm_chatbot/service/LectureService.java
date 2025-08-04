@@ -37,7 +37,9 @@ public class LectureService {
 
     public void saveLecturesFromExcel() {
         try {
-            InputStream is = new ClassPathResource("data/최종_강의시간표.xlsx").getInputStream();
+            lectureRepository.deleteAll();
+
+            InputStream is = new ClassPathResource("data/통합_최종_강의시간표.xlsx").getInputStream();
             Workbook workbook = new XSSFWorkbook(is);
             Sheet sheet = workbook.getSheetAt(0);
 
