@@ -46,7 +46,10 @@ public class SejongAuthZService {
                 CookieName.PO_JSESSION.getValue(),
                 cookies.getOrDefault(CookieName.JSESSION.getValue(), "")
         );
-        String ssoToken = cookies.getOrDefault("ssotoken", "");
+        String ssoToken = cookies.getOrDefault(
+                CookieName.SSO_TOKEN.getValue(),
+                ""
+        );
 
         AuthTokenDto token = AuthTokenDto.of(jsessionId, ssoToken);
         return token;
