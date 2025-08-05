@@ -1,6 +1,8 @@
 package summer_project.llm_chatbot.service;
 
 import lombok.RequiredArgsConstructor;
+import summer_project.llm_chatbot.dto.ProfileDto;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -32,11 +34,15 @@ public class AIService {
     // .build();
     // }
 
-    public String ask(String prompt) {
-        Map<String, Object> request = Map.of("question", prompt);
+    public String ask(String prompt, String studentId, String major) {
 
+        // Map<String, Object> request = Map.of("question", prompt);
+        Map<String, Object> request = Map.of(
+                "question", prompt,
+                "major", major);
         return webClient.post()
                 .uri("/ask")
+                .header("x-student-id", studentId)
                 .bodyValue(request)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {

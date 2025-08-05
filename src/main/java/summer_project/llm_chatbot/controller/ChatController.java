@@ -8,13 +8,16 @@ import summer_project.llm_chatbot.dto.ChatRequestDto;
 import summer_project.llm_chatbot.dto.ChatResponseDto;
 import summer_project.llm_chatbot.dto.ChatHistoryDto;
 import summer_project.llm_chatbot.dto.ConversationDto;
+import summer_project.llm_chatbot.dto.ProfileDto;
 import summer_project.llm_chatbot.entity.ChatLogEntity;
 import summer_project.llm_chatbot.entity.ConversationEntity;
 import summer_project.llm_chatbot.entity.UserEntity;
 import summer_project.llm_chatbot.service.AIService;
 import summer_project.llm_chatbot.service.ChatLogService;
 import summer_project.llm_chatbot.service.ConversationService;
+import summer_project.llm_chatbot.service.UserQueryService;
 import summer_project.llm_chatbot.service.UserService;
+import summer_project.llm_chatbot.dto.ProfileDto;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ import java.util.List;
 @RequestMapping("/chat")
 @RequiredArgsConstructor
 public class ChatController {
+    private final UserQueryService userQueryService;
     private final ConversationService conversationService;
     private final ChatLogService chatLogService;
     private final AIService aiService;
@@ -48,9 +52,10 @@ public class ChatController {
         } else {
             conversation = conversationService.getById(request.getConversationId());
         }
-
+        ProfileDto profile = userQueryService.getProfile(request.getStudentId());
+        String major = profile.major();
         // 2. AI에게 질문
-        String answer = aiService.ask(request.getQuestion());
+        String answer = aiService.ask(request.getQuestion(), request.getStudentId(), major);
 
         // 3. DB 저장
         ChatLogEntity savedLog = chatLogService.save(conversation, request.getQuestion(), answer);
@@ -72,7 +77,7 @@ public class ChatController {
         String normalized = input.replaceAll("[^가-힣a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ]", "");
         System.out.println("normalized: '" + normalized + "'");
         String[] forbiddenPatterns = {
-                "ㅋ{2,}", "ㅎ{2,}", // 반복 웃음
+                "^ㅋ{2,}$", "^ㅎ{2,}$", // 반복 웃음
                 "ㅅㅂ", "씨발", "시발", "병신", "ㅄ", "ㄲㅈ", "ㅈㄴ", "좆", "fuck", "shit", "개새", "좃", "ㅆㅂ"
         };
 
