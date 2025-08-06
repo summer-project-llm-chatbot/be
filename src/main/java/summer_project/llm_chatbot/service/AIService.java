@@ -17,7 +17,7 @@ import java.util.Map;
 public class AIService {
 
     private final WebClient webClient = WebClient.builder()
-            .baseUrl("https://d3b8bf6c79b1.ngrok-free.app")
+            .baseUrl("https://678ff2b0d901.ngrok-free.app")
             .defaultHeader("Content-Type", "application/json")
             .build();
 
