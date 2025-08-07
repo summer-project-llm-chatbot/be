@@ -49,7 +49,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "아직 이수하지 않은 전공필수 과목은 컴퓨터네트워크, Capstone디자인(산학협력프로젝트)입니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "아직 이수해야 할 전공필수 과목은 컴퓨터네트워크와 Capstone디자인(산학협력프로젝트)입니다.";
             }
 
@@ -67,7 +67,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "아직 수강하지 않은 교양 과목 중 추천드릴 수 있는 과목으로는 미생물의 세계, 천문학의 세계, 우리차문화의이해, 호신술, 클래식음악산책 등이 있습니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "아직 수강하지 않은 교양 과목 중 추천드릴 수 있는 과목으로는 교양스키, 교양배드민턴, 우리차문화의이해, 현대인과건강관리, 통계학개론 등이 있습니다.";
             }
 
@@ -87,7 +87,7 @@ public class AIService {
                 return "이수할 수 있는 균형 필수 교양 과목에는 미디어빅뱅과방송, 현대사회와 법, 현대예술의이해, 동서양의사상과윤리, 성서와 기독교, 세계사, 경영학, 경제학이 있습니다."
                         + " 이수할 수 없는 균형 필수 교양 과목에는 현대과학으로의초대,지구환경과기후변화,수의세계가 있습니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "이수할 수 있는 균형 필수 교양 과목에는 미디어빅뱅과방송, 현대사회와 법, 현대예술의이해, 동서양의사상과윤리, 성서와 기독교, 세계사, 경영학, 경제학이 있습니다."
                         + " 이수할 수 없는 균형 필수 교양 과목에는 현대과학으로의초대,지구환경과기후변화,수의세계가 있습니다.";
             }
@@ -106,7 +106,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "졸업까지 남은 학점은 총 41학점입니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "졸업까지 남은 학점은 총 38학점입니다.";
             }
         }
@@ -123,7 +123,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "아직 고전독서인증을 완료하지 않으셨습니다. 인증을 위해 필요한 절차를 확인해 보시는 걸 추천드려요.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "아직 고전독서인증을 완료하지 않으셨습니다. 인증을 위해 필요한 절차를 확인해 보시는 걸 추천드려요.";
             }
 
@@ -141,7 +141,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "1학년 2학기에 이수해야합니다";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "1학년 2학기에 이수해야합니다";
             }
 
@@ -161,7 +161,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "1학년 1학기에 이수해야합니다";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "1학년 1학기에 이수해야합니다";
             }
 
@@ -179,7 +179,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "2~4학년 중 이수해야합니다";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "2~4학년 중 이수해야합니다";
             }
 
@@ -197,7 +197,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "졸업인증을 위해서 영어졸업인증, 고전독서졸업인증, 소프트웨어코딩졸업인증 중 2개 이상을 완료해야합니다";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "졸업인증을 위해서 영어졸업인증과 고전독서졸업인증을 완료해야합니다";
             }
         }
@@ -214,7 +214,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "아직 이수하지 않은 전공선택 과목으로는 XML프로그래밍, 문제해결및실습:JAVA, 멀티코어프로그래밍, 디지털신호처리, K-MOOC:멀티미디어가 있습니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "아직 이수하지 않은 전공선택 과목으로는 데이터베이스프로그래밍, 연구실인턴쉽2, 인공지능, 증강현실, 컴퓨터그래픽스가 있습니다.";
             }
         }
@@ -248,7 +248,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "2학기 수강신청일은 8월 12일 입니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "2학기 수강신청일은 8월 12일 입니다.";
             }
         }
@@ -278,7 +278,7 @@ public class AIService {
             if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
                 return "컴퓨터공학과는 졸업 요건 충족을 위해 총 130학점을 이수하셔야 합니다.";
             }
-            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+            if ("22011818".equals(studentId) && "소프트웨어학과".equals(major)) {
                 return "소프트웨어공학과는 졸업 요건 충족을 위해 총 130학점을 이수하셔야 합니다.";
             }
         }
