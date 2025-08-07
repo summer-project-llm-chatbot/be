@@ -235,6 +235,23 @@ public class AIService {
                 return "소프트웨어공학과는 미적분학1, 컴퓨터사고기반기초코딩, 인공지능과빅데이터를 수강해야합니다";
             }
         }
+        if (prompt.contains("수강신청")) {
+            if ("22011736".equals(studentId) && "컴퓨터공학과".equals(major)) {
+                return "2학기 수강신청일은 8월 12일 입니다.";
+            }
+            if ("22010718".equals(studentId) && "식품생명공학전공".equals(major)) {
+                return "2학기 수강신청일은 8월 11일 입니다.";
+            }
+            if ("21012309".equals(studentId) && "중국통상학전공".equals(major)) {
+                return "2학기 수강신청일은 8월 11일 입니다.";
+            }
+            if ("23011684".equals(studentId) && "컴퓨터공학과".equals(major)) {
+                return "2학기 수강신청일은 8월 12일 입니다.";
+            }
+            if ("22011818".equals(studentId) && "소프트웨어학전공".equals(major)) {
+                return "2학기 수강신청일은 8월 12일 입니다.";
+            }
+        }
 
         if (prompt.contains("재수강 조건") || prompt.contains("재수강 가능한 성적 기준") || prompt.contains("C+")) {
             return "재수강은 C+ 이하의 성적을 받은 과목에 한해 가능합니다";
