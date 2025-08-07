@@ -262,7 +262,7 @@ public class AIService {
         if (prompt.contains("균형교양 이수 조건") || prompt.contains("균형교양 이수 요건")) {
             return "2~4학년 시기에 자신의 소속 계열을 제외한 3개 영역에서 6학점을 선택 이수해야합니다";
         }
-        if (prompt.contains("공통필수") || prompt.contains("공필")) {
+        if (prompt.contains("공통필수")) {
             return "공통필수과목에는 세종인을위한진로설계, 세종인을위한전공탐색, 문제해결을위한글쓰기와발표, 서양철학:쟁점과토론, 우주자연인간, 대학영어, 창업과기업가정신1, 취창업과진로설계가 있습니다";
         }
         if (prompt.contains("총 졸업 이수 학점") || prompt.contains("졸업 학점") || prompt.contains("졸업 요건 몇 학점")) {
